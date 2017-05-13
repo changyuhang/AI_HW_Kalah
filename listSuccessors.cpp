@@ -7,9 +7,9 @@ int listSuccessors(int house[], int successor[], bool isMaxPlayer);
 void test_listSuccessors();
 
 int listSuccessors(int house[], int successor[], bool isMaxPlayer) {
-
     int possible_actions = 0;
-    for (size_t i = player_store[isMaxPlayer] - 6; i < player_store[isMaxPlayer]; i++) {
+    for (size_t i = player_store[isMaxPlayer] - 6;
+         i < player_store[isMaxPlayer]; i++) {
         if (house[i] != 0) {
             successor[possible_actions++] = i;
         }
@@ -17,7 +17,7 @@ int listSuccessors(int house[], int successor[], bool isMaxPlayer) {
     return possible_actions;
 }
 
-void test_listSuccessors(){
+void test_listSuccessors() {
     int ts;
     int house[14];
     char temp[10];
