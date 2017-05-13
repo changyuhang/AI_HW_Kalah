@@ -49,11 +49,17 @@ int main(int argc, char const *argv[]) {
 
     GameState state(seeds);
     while (!state.noFurtherAction()) {
+        bool more_action;
         state.printState();
         if (player) {
-            state.nextState(ai::minimaxDecision(state, depth));
+            std::cout << "ai" << std::endl;
+            more_action = state.nextState(ai::minimaxDecision(state, depth));
         } else {
-            state.nextState(getNextAction(state));
+            std::cout << "human" << std::endl;
+            more_action = state.nextState(getNextAction(state));
+        }
+        if (more_action == false) {
+            player = !player;
         }
     }
 

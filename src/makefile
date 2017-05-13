@@ -2,7 +2,7 @@ CC = g++
 CFLAGS = -Wall
 OBJ = main.o game_state_class.o ai_class.o
 
-all: main
+all: main.out
 
 main.out: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)

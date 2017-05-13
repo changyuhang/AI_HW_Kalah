@@ -46,6 +46,7 @@ bool GameState::relocation(int picked_house, int next_house[]) {
     for (size_t i = house[picked_house]; i > 0 ; i--, ++index) {
         index %= 14;
         if (index == player_store[!player]) {
+
             i++;
             continue;
         }
@@ -78,11 +79,11 @@ void GameState::finalScoring() {
     return;
 }
 
-void GameState::nextState(int picked_house) {
+bool GameState::nextState(int picked_house) {
     int next_house[14];
-    relocation(picked_house, next_house);
+    bool more_action = relocation(picked_house, next_house);
     std::copy(next_house, next_house + 14, house);
-    return;
+    return more_action;
 }
 
 void GameState::printState() {
