@@ -1,4 +1,3 @@
-/* copyright */
 #ifndef SRC_AI_CLASS_H_
 #define SRC_AI_CLASS_H_
 #include <limits>

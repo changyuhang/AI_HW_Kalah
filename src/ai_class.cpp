@@ -1,4 +1,3 @@
-/* copyright */
 #include "ai_class.h"
 namespace ai {
 int evaluate(GameState state) {

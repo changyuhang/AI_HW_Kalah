@@ -1,5 +1,3 @@
-/* copyright */
-
 #ifndef SRC_GAME_STATE_CLASS_H_
 #define SRC_GAME_STATE_CLASS_H_
 

@@ -1,4 +1,3 @@
-/* copyright */
 #include "game_state_class.h"
 
 GameState::GameState(int seeds) {
