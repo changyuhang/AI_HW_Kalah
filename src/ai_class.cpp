@@ -73,5 +73,19 @@ int minValue(GameState state, int depth, int alpha, int beta, int *action) {
     }
     return beta;
 }
-
+void test_minimax() {
+    int ts;
+    std::cin >> ts;
+    while (ts--) {
+        int house[14];
+        int depthMAX;
+        for (size_t i = 0; i < 14; i++) {
+            std::cin >> house[i];
+        }
+        std::cin >> depthMAX;
+        GameState state(house);
+        std::cout << minimaxDecision(state, depthMAX) << std::endl;
+    }
+    return;
+}
 }  // namespace ai

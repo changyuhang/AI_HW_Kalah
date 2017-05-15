@@ -20,6 +20,7 @@ int getNextAction(GameState state) {
 }
 
 int main(int argc, char const *argv[]) {
+    ai::test_minimax();
     int seeds;
     int depth;
     int house[14] = {};

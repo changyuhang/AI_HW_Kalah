@@ -9,5 +9,6 @@ namespace ai {
     int maxValue(GameState state, int depth, int alpha, int beta, int *action);
     int minValue(GameState state, int depth, int alpha, int beta, int *action);
     int evaluate(GameState state);
+    void test_minimax();
 }
 #endif  // SRC_AI_CLASS_H_
