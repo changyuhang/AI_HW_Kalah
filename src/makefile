@@ -12,4 +12,4 @@ main.out: $(OBJ)
 .PHONT: clean
 
 clean:
-	rm -f *.o main *.out
+	rm -f *.o *.out *.txt
