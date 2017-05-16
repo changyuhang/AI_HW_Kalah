@@ -8,10 +8,10 @@ GameState::GameState(int seeds) {
 GameState::GameState(int *h) {
     std::copy(h, h + 14, house);
 }
-int GameState::listSuccessors(int successor[], bool isMaxPlayer) {
+int GameState::listSuccessors(int successor[]) {
     int possible_actions = 0;
-    for (size_t i = player_store[isMaxPlayer] - 6;
-         i < player_store[isMaxPlayer]; i++) {
+    for (size_t i = player_store[whoes_turn] - 6;
+         i < player_store[whoes_turn]; i++) {
         if (house[i] != 0) {
             successor[possible_actions++] = i;
         }
@@ -46,7 +46,6 @@ bool GameState::relocation(int picked_house, int next_house[]) {
     for (size_t i = house[picked_house]; i > 0 ; i--, ++index) {
         index %= 14;
         if (index == player_store[!player]) {
-
             i++;
             continue;
         }
@@ -86,6 +85,16 @@ bool GameState::nextState(int picked_house) {
     return more_action;
 }
 
+void GameState::findPossibleAction(std::vector<GameState> &v) {
+    int successor[6];
+    int possible_actions = listSuccessors(successor);
+    for (size_t i = 0; i < possible_actions; i++) {
+        GameState next_state(house);
+        next_state.whoes_turn = next_state.nextState(successor[i]);
+        next_state.action = successor[i];
+        v.push_back(next_state);
+    }
+}
 void GameState::printState() {
     for (size_t i = 0; i < 14; i++) {
         std::cout << house[i];

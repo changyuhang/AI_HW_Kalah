@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <algorithm>
-
+#include <vector>
 
 class GameState {
  public:
@@ -14,14 +14,17 @@ class GameState {
      };
      explicit GameState(int seeds);
      explicit GameState(int *house);
-     int listSuccessors(int successor[], bool isMaxPlayer);
+     int listSuccessors(int successor[]);
      bool noFurtherAction();
      bool relocation(int picked_house, int next_house[]);
      void finalScoring();
      bool nextState(int picked_house);
+     void findPossibleAction(std::vector<GameState> &);
      void printState();
      ~GameState();
      int house[14];
+     bool whoes_turn;
+     int action;
 };
 
 #endif  // SRC_GAME_STATE_CLASS_H_
