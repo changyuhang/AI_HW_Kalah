@@ -82,6 +82,9 @@ bool GameState::nextState(int picked_house) {
     int next_house[14];
     bool more_action = relocation(picked_house, next_house);
     std::copy(next_house, next_house + 14, house);
+    if (!more_action) {
+        whoes_turn = !whoes_turn;
+    }
     return more_action;
 }
 
@@ -90,7 +93,7 @@ void GameState::findPossibleAction(std::vector<GameState> &v) {
     int possible_actions = listSuccessors(successor);
     for (size_t i = 0; i < possible_actions; i++) {
         GameState next_state(house);
-        next_state.whoes_turn = next_state.nextState(successor[i]);
+        next_state.nextState(successor[i]);
         next_state.action = successor[i];
         v.push_back(next_state);
     }
