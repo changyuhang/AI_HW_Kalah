@@ -7,8 +7,7 @@
 
 namespace ai {
     int minimaxDecision(GameState state, int depth);
-    int maxValue(GameState state, int depth, int alpha, int beta, int *action);
-    int minValue(GameState state, int depth, int alpha, int beta, int *action);
+    int minimaxValue(GameState state, int depth, int alpha, int beta, int *action);
     int evaluate(GameState state);
     void test_minimax();
 }
