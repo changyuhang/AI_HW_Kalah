@@ -20,6 +20,7 @@ int getNextAction(GameState state) {
 }
 
 int main(int argc, char const *argv[]) {
+    //ai::test_next_state();
     ai::test_minimax();
     int seeds;
     int depth;
@@ -51,7 +52,7 @@ int main(int argc, char const *argv[]) {
     GameState state(seeds);
     while (!state.noFurtherAction()) {
         bool more_action;
-        state.printState();
+        // state.printState();
         if (player) {
             std::cout << "ai" << std::endl;
             more_action = state.nextState(ai::minimaxDecision(state, depth));

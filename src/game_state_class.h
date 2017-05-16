@@ -13,14 +13,15 @@ class GameState {
          computer = true,
      };
      explicit GameState(int seeds);
-     explicit GameState(int *house);
-     int listSuccessors(int successor[]);
+     explicit GameState(const int *house);
+     GameState(const GameState &);
+     int listSuccessors(int successor[]) const;
      bool noFurtherAction();
-     bool relocation(int picked_house, int next_house[]);
+     bool relocation(int picked_house, int next_house[]) const;
      void finalScoring();
      bool nextState(int picked_house);
-     void findPossibleAction(std::vector<GameState> &);
-     void printState();
+     void findPossibleAction(std::vector<GameState> &) const;
+     void printState() const;
      ~GameState();
      int house[14];
      bool whoes_turn;
