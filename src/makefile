@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -O3
 OBJ = main.o game_state_class.o ai_class.o
 
 all: main.out

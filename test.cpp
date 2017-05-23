@@ -2,6 +2,13 @@
 #include <limits>
 #include <algorithm>
 using namespace std;
+float sort_t = 0;
+
+typedef struct {
+    int house[14];
+    int action;
+    bool more_action;
+}nextState;
 
 enum players { human = false, computer = true};
 const int player_store[2] = {6, 13};
@@ -12,7 +19,7 @@ int minimaxDecision(int house[], int depth);
 int maxValue(int house[], int depth, int alpha, int beta, int *action);
 int minValue(int house[], int depth, int alpha, int beta, int *action);
 
-int evaluate(int house[]) {
+int evaluate(const int house[]) {
     return house[player_store[computer]] - house[player_store[human]];
 }
 
@@ -58,7 +65,15 @@ bool relocation(int now_house[], int picked_house, int next_house[]) {
     }
 }
 
-
+bool cmp(const nextState& a, const nextState& b) {
+    if (a.more_action) {
+        return true;
+    } else if (b.more_action) {
+        return false;
+    } else {
+        return evaluate(a.house) > evaluate(b.house);
+    }
+}
 int minimaxDecision(int house[], int depth) {
     int action = -1;
     int alpha = -numeric_limits<int>::max();
@@ -77,18 +92,28 @@ int maxValue(int house[], int depth, int alpha, int beta, int *action) {
     if (possible_actions == 0) {
         return evaluate(house);
     }
+
+    nextState next_state[6];
     for (size_t i = 0; i < possible_actions; i++) {
-        int next_house[14];
+        next_state[i].action = successor[i];
+        next_state[i].more_action = relocation(house, successor[i]
+                                                    , next_state[i].house);
+    }
+    // clock_t sortt;
+    // sortt = clock();
+    sort(next_state, next_state + possible_actions, cmp);
+    // sortt = clock() - sortt;
+    // sort_t += (float)sortt / CLOCKS_PER_SEC;
+    for (size_t i = 0; i < possible_actions; i++) {
         int value, a;
-        bool more_action = relocation(house, successor[i], next_house);
-        if (more_action) {
-            value = maxValue(next_house, depth - 2, alpha, beta, &a);
+        if (next_state[i].more_action) {
+            value = maxValue(next_state[i].house, depth - 2, alpha, beta, &a);
         } else {
-            value = minValue(next_house, depth - 1, alpha, beta, &a);
+            value = minValue(next_state[i].house, depth - 1, alpha, beta, &a);
         }
         if (alpha < value) {
             alpha = value;
-            *action = successor[i];
+            *action = next_state[i].action;
         }
         if (beta <= alpha) {
             return beta;
@@ -108,18 +133,28 @@ int minValue(int house[], int depth, int alpha, int beta, int *action) {
     if (possible_actions == 0) {
         return evaluate(house);
     }
+
+    nextState next_state[6];
     for (size_t i = 0; i < possible_actions; i++) {
-        int next_house[14];
+        next_state[i].action = successor[i];
+        next_state[i].more_action = relocation(house, successor[i]
+                                                    , next_state[i].house);
+    }
+    // clock_t sortt;
+    // sortt = clock();
+    sort(next_state, next_state + possible_actions, cmp);
+    // sortt = clock() - sortt;
+    // sort_t += (float)sortt / CLOCKS_PER_SEC;
+    for (size_t i = 0; i < possible_actions; i++) {
         int value, a;
-        bool more_action = relocation(house, successor[i], next_house);
-        if (more_action) {
-            value = minValue(next_house, depth - 2, alpha, beta, &a);
+        if (next_state[i].more_action) {
+            value = minValue(next_state[i].house, depth - 2, alpha, beta, &a);
         } else {
-            value = maxValue(next_house, depth - 1, alpha, beta, &a);
+            value = maxValue(next_state[i].house, depth - 1, alpha, beta, &a);
         }
         if (beta > value) {
             beta = value;
-            *action = successor[i];
+            *action = next_state[i].action;
         }
         if (beta <= alpha) {
             return alpha;
@@ -133,6 +168,7 @@ void test_minimax() {
     cin >> ts;
     while (ts--) {
         c = 0;
+        sort_t = 0;
         int house[14];
         int depth;
         for (size_t i = 0; i < 14; i++) {
@@ -143,9 +179,11 @@ void test_minimax() {
         t = clock();
         cout << minimaxDecision(house, depth) << endl;
         t = clock() - t;
-        // printf("It took me %d clicks (%f seconds).\n",
-        //                     t, ((float)t)/CLOCKS_PER_SEC);
-        // cout << "深度" << depth << "次數" << c << endl;
+        printf("It took me %d clicks (%f seconds).\n",
+                            t, ((float)t)/CLOCKS_PER_SEC);
+        printf("It took me %d clicks (%f seconds).\n",
+                            sort_t, ((float)sort_t)/CLOCKS_PER_SEC);
+        cout << "深度" << depth << "次數" << c << endl;
     }
     return;
 }
