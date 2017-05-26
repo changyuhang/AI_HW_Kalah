@@ -143,9 +143,9 @@ void test_minimax() {
         t = clock();
         cout << minimaxDecision(house, depth) << endl;
         t = clock() - t;
-        // printf("It took me %d clicks (%f seconds).\n",
-        //                     t, ((float)t)/CLOCKS_PER_SEC);
-        // cout << "深度" << depth << "次數" << c << endl;
+        printf("It took me %d clicks (%f seconds).\n",
+                            t, ((float)t)/CLOCKS_PER_SEC);
+        cout << "深度" << depth << "次數" << c << endl;
     }
     return;
 }

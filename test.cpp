@@ -2,7 +2,6 @@
 #include <limits>
 #include <algorithm>
 using namespace std;
-float sort_t = 0;
 
 typedef struct {
     int house[14];
@@ -12,18 +11,18 @@ typedef struct {
 
 enum players { human = false, computer = true};
 const int player_store[2] = {6, 13};
-
+int total_seeds = 0;
 int c = 0;
 
-int minimaxDecision(int house[], int depth);
-int maxValue(int house[], int depth, int alpha, int beta, int *action);
-int minValue(int house[], int depth, int alpha, int beta, int *action);
+int minimaxDecision(const int house[], int depth);
+int maxValue(const int house[], int depth, int alpha, int beta, int *action);
+int minValue(const int house[], int depth, int alpha, int beta, int *action);
 
 int evaluate(const int house[]) {
     return house[player_store[computer]] - house[player_store[human]];
 }
 
-int listSuccessors(int house[], int successor[], bool isMaxPlayer) {
+int listSuccessors(const int house[], int successor[], bool isMaxPlayer) {
     int possible_actions = 0;
     for (size_t i = player_store[isMaxPlayer] - 6;
         i < player_store[isMaxPlayer]; i++) {
@@ -34,7 +33,8 @@ int listSuccessors(int house[], int successor[], bool isMaxPlayer) {
     return possible_actions;
 }
 
-bool relocation(int now_house[], int picked_house, int next_house[]) {
+bool relocation(const int now_house[], const int picked_house,
+                int next_house[]) {
     players player = picked_house > 6 ? computer : human;   // computer or human
     copy(now_house, now_house + 14, next_house);
     next_house[picked_house] = 0;
@@ -65,24 +65,33 @@ bool relocation(int now_house[], int picked_house, int next_house[]) {
     }
 }
 
+
 bool cmp(const nextState& a, const nextState& b) {
-    if (a.more_action) {
-        return true;
+    if (a.more_action && b.more_action) {
+        return evaluate(a.house) > evaluate(b.house);
     } else if (b.more_action) {
         return false;
+    } else if (a.more_action) {
+        return true;
     } else {
         return evaluate(a.house) > evaluate(b.house);
     }
 }
-int minimaxDecision(int house[], int depth) {
+
+int minimaxDecision(const int house[], int depth) {
     int action = -1;
     int alpha = -numeric_limits<int>::max();
     int beta = numeric_limits<int>::max();
-    maxValue(house, depth, alpha, beta, &action);
+    cout << maxValue(house, depth, alpha, beta, &action) << endl;
     return action;
 }
 
-int maxValue(int house[], int depth, int alpha, int beta, int *action) {
+int maxValue(const int house[], int depth, int alpha, int beta, int *action) {
+    if (house[player_store[computer]] > total_seeds / 2) {
+        return 999;
+    } else if (house[player_store[human]] > total_seeds / 2) {
+        return -999;
+    }
     c++;
     if (depth <= 0) {
         return evaluate(house);
@@ -99,11 +108,19 @@ int maxValue(int house[], int depth, int alpha, int beta, int *action) {
         next_state[i].more_action = relocation(house, successor[i]
                                                     , next_state[i].house);
     }
-    // clock_t sortt;
-    // sortt = clock();
+
     sort(next_state, next_state + possible_actions, cmp);
-    // sortt = clock() - sortt;
-    // sort_t += (float)sortt / CLOCKS_PER_SEC;
+        // [](const nextState& a, const nextState& b) {
+        // if (a.more_action && b.more_action) {
+        //     return evaluate(a.house) > evaluate(b.house);
+        // } else if (b.more_action) {
+        //     return false;
+        // } else if (a.more_action) {
+        //     return true;
+        // } else {
+        //     return evaluate(a.house) > evaluate(b.house);
+        // }});
+
     for (size_t i = 0; i < possible_actions; i++) {
         int value, a;
         if (next_state[i].more_action) {
@@ -122,7 +139,12 @@ int maxValue(int house[], int depth, int alpha, int beta, int *action) {
     return alpha;
 }
 
-int minValue(int house[], int depth, int alpha, int beta, int *action) {
+int minValue(const int house[], int depth, int alpha, int beta, int *action) {
+    if (house[player_store[computer]] > total_seeds / 2) {
+        return 999;
+    } else if (house[player_store[human]] > total_seeds / 2) {
+        return -999;
+    }
     c++;
     if (depth <= 0) {
         return evaluate(house);
@@ -140,11 +162,19 @@ int minValue(int house[], int depth, int alpha, int beta, int *action) {
         next_state[i].more_action = relocation(house, successor[i]
                                                     , next_state[i].house);
     }
-    // clock_t sortt;
-    // sortt = clock();
+
     sort(next_state, next_state + possible_actions, cmp);
-    // sortt = clock() - sortt;
-    // sort_t += (float)sortt / CLOCKS_PER_SEC;
+        // [](const nextState& a, const nextState& b) {
+        // if (a.more_action && b.more_action) {
+        //     return evaluate(a.house) > evaluate(b.house);
+        // } else if (b.more_action) {
+        //     return false;
+        // } else if (a.more_action) {
+        //     return true;
+        // } else {
+        //     return evaluate(a.house) > evaluate(b.house);
+        // }});
+
     for (size_t i = 0; i < possible_actions; i++) {
         int value, a;
         if (next_state[i].more_action) {
@@ -168,11 +198,12 @@ void test_minimax() {
     cin >> ts;
     while (ts--) {
         c = 0;
-        sort_t = 0;
+        total_seeds = 0;
         int house[14];
         int depth;
         for (size_t i = 0; i < 14; i++) {
             cin >> house[i];
+            total_seeds += house[i];
         }
         cin >> depth;
         clock_t t;
@@ -181,8 +212,6 @@ void test_minimax() {
         t = clock() - t;
         printf("It took me %d clicks (%f seconds).\n",
                             t, ((float)t)/CLOCKS_PER_SEC);
-        printf("It took me %d clicks (%f seconds).\n",
-                            sort_t, ((float)sort_t)/CLOCKS_PER_SEC);
         cout << "深度" << depth << "次數" << c << endl;
     }
     return;
