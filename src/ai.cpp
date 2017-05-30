@@ -1,23 +1,11 @@
+#include "ai.h"
+#include "kalah.h"
+
 #include <iostream>
-#include <limits>
 #include <algorithm>
+#include <limits>
+
 using namespace std;
-
-typedef struct {
-    int house[14];
-    int action;
-    bool more_action;
-}nextState;
-
-enum players { human = false, computer = true};
-const int player_store[2] = {6, 13};
-int total_seeds = 0;
-int c = 0;
-
-int minimaxDecision(const int house[], int depth);
-int minimax(const int house[], int depth, int alpha, int beta, int *action,
-            bool whoes_turn);
-
 int evaluate(const int house[]) {
     return house[player_store[computer]] - house[player_store[human]];
 }
@@ -32,39 +20,6 @@ int listSuccessors(const int house[], int successor[], bool isMaxPlayer) {
     }
     return possible_actions;
 }
-
-bool relocation(const int now_house[], const int picked_house,
-                int next_house[]) {
-    players player = picked_house > 6 ? computer : human;   // computer or human
-    copy(now_house, now_house + 14, next_house);
-    next_house[picked_house] = 0;
-    int index = picked_house + 1;
-
-    for (size_t i = now_house[picked_house]; i > 0 ; i--, ++index) {
-        index %= 14;
-        if (index == player_store[!player]) {
-            i++;
-            continue;
-        }
-        next_house[index]++;
-    }
-    index--;
-    if (next_house[index] == 1
-        && index / 7 == player
-        && next_house[12 - index] != 0
-        && index != player_store[player]) {
-        next_house[player_store[player]] += next_house[index]
-                                            + next_house[12 - index];
-        next_house[index] = 0;
-        next_house[12 - index] = 0;
-    }
-    if (index == player_store[player]) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 
 bool cmp(const nextState& a, const nextState& b) {
     if (a.more_action && b.more_action) {
@@ -151,34 +106,4 @@ int minimax(const int house[], int depth, int alpha, int beta, int *action,
         }
         return beta;
     }
-}
-
-
-void test_minimax() {
-    int ts;
-    cin >> ts;
-    while (ts--) {
-        c = 0;
-        total_seeds = 0;
-        int house[14];
-        int depth;
-        for (size_t i = 0; i < 14; i++) {
-            cin >> house[i];
-            total_seeds += house[i];
-        }
-        cin >> depth;
-        clock_t t;
-        t = clock();
-        cout << minimaxDecision(house, depth) << endl;
-        t = clock() - t;
-        printf("It took me %d clicks (%f seconds).\n",
-                            t, ((float)t)/CLOCKS_PER_SEC);
-        cout << "深度" << depth << "次數" << c << endl;
-    }
-    return;
-}
-
-int main(int argc, char const *argv[]) {
-    test_minimax();
-    return 0;
 }

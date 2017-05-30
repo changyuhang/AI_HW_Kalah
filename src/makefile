@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -O3
-OBJ = main.o game_state_class.o ai_class.o
+OBJ = main.o kalah.o ai.o
 
 all: main.out
 
