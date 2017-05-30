@@ -4,7 +4,8 @@
 #include <iostream>
 #include <algorithm>
 #include <limits>
-
+int c = 0;
+int total_seeds = 0;
 using namespace std;
 int evaluate(const int house[]) {
     return house[player_store[computer]] - house[player_store[human]];

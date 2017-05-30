@@ -5,9 +5,7 @@ typedef struct {
     int action;
     bool more_action;
 }nextState;
-
-int total_seeds = 0;
-int c = 0;
+extern int total_seeds;
 int evaluate(const int house[]);
 int listSuccessors(const int house[], int successor[], bool isMaxPlayer);
 bool cmp(const nextState& a, const nextState& b);
