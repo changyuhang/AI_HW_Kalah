@@ -39,6 +39,8 @@ int minimaxDecision(const int house[], int depth) {
     int alpha = -numeric_limits<int>::max();
     int beta = numeric_limits<int>::max();
     cout << "分數" << minimax(house, depth, alpha, beta, &action, computer) << endl;
+    cout << "action" << action << endl;
+    // minimax(house, depth, alpha, beta, &action, computer);
     return action;
 }
 
