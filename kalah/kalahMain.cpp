@@ -15,7 +15,6 @@ void printHouse(const int house[]) {
 int main(int argc, char const *argv[]) {
     int depth;
     int house[14] = {};
-    total_seeds;
     total_seeds = 0;
     bool player;  // false = human, true = computer
     cout << "請輸入初始狀態" << endl;
@@ -58,6 +57,7 @@ int main(int argc, char const *argv[]) {
         copy(next_house, next_house + 14, house);
     }
     finalScoring(house);
+    printHouse(house);
     if (player_store[human] > player_store[computer]) {
         cout << "你贏了" << endl;
     } else if (player_store[human] < player_store[computer]) {
