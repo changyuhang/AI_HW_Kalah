@@ -34,7 +34,7 @@ bool cmp(const nextState& a, const nextState& b) {
     }
 }
 
-int minimaxDecision(const int house[], int depth) {
+int minimaxDecision(int house[], int depth) {
     int action = -1;
     int alpha = -numeric_limits<int>::max();
     int beta = numeric_limits<int>::max();
@@ -44,9 +44,13 @@ int minimaxDecision(const int house[], int depth) {
     return action;
 }
 
-int minimax(const int house[], int depth, int alpha, int beta, int *action,
+int minimax(int house[], int depth, int alpha, int beta, int *action,
             bool whoes_turn) {
     c++;
+    if (noFurtherAction(house)) {
+        finalScoring(house);
+        return evaluate(house);
+    }
     if (house[player_store[computer]] > total_seeds / 2) {
         return 999;
     } else if (house[player_store[human]] > total_seeds / 2) {

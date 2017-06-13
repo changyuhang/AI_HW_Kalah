@@ -2,7 +2,7 @@
 #define KALAH_H_
 enum players { human = false, computer = true};
 const int player_store[2] = {6, 13};
-bool noFurtherAction(int house[]);
+bool noFurtherAction(const int house[]);
 bool relocation(const int now_house[], const int picked_house
                                      , int next_house[]);
 void finalScoring(int house[]);

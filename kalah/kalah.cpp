@@ -3,7 +3,7 @@
 #include <algorithm>
 
 // Part 1
-bool noFurtherAction(int house[]) {
+bool noFurtherAction(const int house[]) {
     for (size_t i = 0; i < 13; i == 5 ? i += 2 : i++) {
         if (house[i] != 0) {
             if (i < 6) {
